@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8' />
+    <title>H A L O || M A P S</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js'></script>
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+
+    <style>
+        @import url("https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css");
+        @import url("https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css");
+        @import url("https://fonts.googleapis.com/css?family=Noto Sans");
+        @import url("https://halosales.app/version-test/housepopup.css");
+        @import url("https://halosales.app/version-test/sidemenu.css");
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+
+        .marker span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            width: 30px;
+            height: 30px;
+            color: #fff;
+            background: #693;
+            border: solid 2px;
+            border-radius: 0 70% 70%;
+            box-shadow: 0 0 2px #000;
+            cursor: pointer;
+            transform-origin: 0 0;
+            transform: rotateZ(-0deg);
+        }
+
+        .marker b {
+            transform: rotateZ(0deg)
+        }
+
+
+
+        h1 {
+            font-size: 22px;
+            margin: 0;
+            font-weight: 400;
+            line-height: 20px;
+            padding: 20px 2px;
+        }
+
+
+        form {
+            background-color: #4654e1;
+            width: 200px;
+            height: 44px;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        input {
+            all: unset;
+            font: 16px system-ui;
+            color: #fff;
+            height: 100%;
+            width: 100%;
+            padding: 6px 10px;
+        }
+
+        ::placeholder {
+            color: #fff;
+            opacity: 0.7;
+        }
+
+
+        .search {
+            all: unset;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+        }
+
+        svg {
+            color: #fff;
+            fill: currentColor;
+            width: 24px;
+            height: 24px;
+            padding: 10px;
+        }
+
+        a {
+            color: #404040;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #101010;
+        }
+
+        #loading {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(192, 192, 192, 0.5);
+            /* background-image: url("https://halosales.app/version-test/halo-loading-animation"); */
+            background-size: 100px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .marker {
+            border: none;
+            cursor: pointer;
+            height: 56px;
+            width: 56px;
+            background-image: url(marker.png);
+        }
+
+        .search_outer {
+            display: flex;
+        }
+        .search_left {
+            flex-grow: 1;
+        }
+        .search_form {
+            width: 90%;
+            margin-top: 7px;
+        }
+/*
+         * loader code begins
+         */
+        .loading_inner {
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            width: 100%;
+            height: 100%;
+        }
+         .lds-spinner {
+  color: official;
+  display: inline-block;
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.lds-spinner div {
+  transform-origin: 20px 20px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+.lds-spinner div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  /* top: 3px;
+  left: 37px;
+  width: 6px;
+  height: 18px;
+  border-radius: 20%; */
+  top: 2px;
+  left: 18px;
+  width: 3px;
+  height: 9px;
+  border-radius: 20%;
+  background: #fff;
+}
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.loading_spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /* background-color: rgba(192, 192, 192, 0.5); */
+    /* background-color: rgb(220, 215, 205); */
+    z-index: 101;
+}
+        /*
+         * loader code ends
+         */
+    </style>
+</head>
+<body>
+    <div id="map" class="map"></div>
+
+    <canvas id="canvas"></canvas>
+    <div id="loading">
+    </div>
+    <div class="loading_spinner" id="loading_spinner">
+        <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
+
+    <container sidemenu>
+        <div id="sidebar" class="sidebar">
+            <div class="heading">
+                <div class="search_outer">
+                    <div class="search_left">
+                        <form role="search" id="form" class="search_form" onsubmit="search_trigger(); return false;">
+                            <input type="search" id="query" name="q" placeholder="Search..."
+                                aria-label="Search through site content" />
+                            <button class="search" id="search_magnifier">
+                                <svg viewBox="0 0 1024 1024">
+                                    <path class="path1"
+                                        d="M848.471 928l-263.059-263.059c-48.941 36.706-110.118 55.059-177.412 55.059-171.294 0-312-140.706-312-312s140.706-312 312-312c171.294 0 312 140.706 312 312 0 67.294-24.471 128.471-55.059 177.412l263.059 263.059-79.529 79.529zM189.623 408.078c0 121.364 97.091 218.455 218.455 218.455s218.455-97.091 218.455-218.455c0-121.364-103.159-218.455-218.455-218.455-121.364 0-218.455 97.091-218.455 218.455z">
+                                    </path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="search_right">
+                        <button id="close_sidebar" type="button" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div id="listings" class="listings"></div>
+
+        </div><button id="openbtn" onclick="openNav()">☰</button>
+    </container>
+
+
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+    <!-- <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script> -->
+
+    <!-- <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+// ...
+
+<script defer src="./init-firebase.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            setVisible('#sidebar', false);
+            setVisible('#openbtn', false);
+
+
+            initMap();
+
+            $("#close_sidebar").on("click", function () {
+                let sidebar_visible = document.getElementById('sidebar').style.display;
+                if (sidebar_visible != 'none') {
+                    document.getElementById('sidebar').style.display = 'none';
+                }
+            });
+
+            $("#query").on("keyup", function () {
+                search_trigger()
+            });
+        });
+
+        function search_trigger() {
+            // console.log("check")
+            key = $("#query").val();
+            // console.log(key)
+            $("#listings .item").show();
+            $("#listings .item").each(function () {
+                // console.log(this)
+                if (!$(this).find(".title").text().includes(key)) {
+                    // console.log("top ")
+                    $(this).hide()
+                } else {
+                    // console.log("down")
+                }
+            })
+
+        }
+
+        let map = {};
+        let houses = { type: 'FeatureCollection', features: [] };
+        let geojson2 = houses;
+        let hoveredStateId = null;
+
+        function initMap() {
+            mapboxgl.accessToken = 'pk.eyJ1IjoidGhlaGFsb3RlYW0iLCJhIjoiY2ttcDB2YjdrMDdmZjJxcW0xMG10b3VjZSJ9.bRVI_7ubNYtwMXX5qAGxVA';
+            map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/thehaloteam/ckuwsyrcn1x3017rvvlv5s7in',
+                center: [-82.335488, 28.311056],
+                zoom: 15.0,
+                collectResourceTiming: true,
+                antialias: true,
+                maxZoom: 20,
+                minZoom: 10,
+                hash: true,
+                pitchWithRotate: false,
+                renderWorldCopies: false,
+            });
+
+            window.hoveredStateId = null;
+
+            const geolocate = new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true
+            });
+
+            map.addControl(geolocate);
+            geolocate.on('trackuserlocationstart', (e) => {
+                if ("geolocation" in navigator) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        map.setView([position.coords.longitude, position.coords.latitude], 11);
+                    });
+                } else { console.warn("geolocation IS NOT available, handle it"); }
+            });
+
+
+
+            function sourceRefresh(e) {
+                console.log("sourceRefresh");
+            };
+
+            map.on('load', () => {
+
+                console.log("map is loaded");
+
+                map.addSource('homeowners', {
+                    type: 'geojson',
+                    data: geojson2,
+                    generateId: true,
+                });
+
+                map.addLayer({
+                    id: 'highlighted-house',
+                    type: 'circle',
+                    source: 'homeowners',
+                    minZoom: 10,
+                    maxZoom: 18,
+                    paint: {
+                        'circle-stroke-color':
+                            ['case', ['boolean', ['feature-state', 'hover'], true],
+                                '#dfc16d', '#dfc16d'],
+
+                        'circle-stroke-opacity':
+                            ['case', ['boolean', ['feature-state', 'hover'], false],
+                                0.8, 0.0],
+
+                        'circle-stroke-color':
+                            ['case', ['boolean', ['feature-state', 'hover'], true],
+                                .5, 0.5],
+
+                        'circle-stroke-opacity':
+                            ['case', ['boolean', ['feature-state', 'hover'], false],
+                                0.8, 0.0],
+
+                        'circle-stroke-width': 5,
+                        'circle-color': 'transparent',
+                        'circle-stroke-color': '#dfc16d',
+                        'circle-radius': {
+                            'base': 2,
+                            'base': 2,
+                            'stops': [[10, 2], [15, 9], [20, 40]]
+                        },
+                    }
+                });
+
+                map.addLayer({
+                    id: 'homeowners',
+                    type: 'symbol',
+                    source: 'homeowners',
+                    minZoom: 10,
+                    maxZoom: 18,
+                    "layout": {
+                        "icon-image": [
+                            "step",
+                            ["zoom"],
+                            [
+                                "match",
+                                ["get", "contact_status"],
+                                "interested",
+                                "interested-icon",
+                                "notinterested",
+                                "notinterested-icon",
+                                "nothome",
+                                "nothome-icon",
+                                "comeback",
+                                "comeback-icon",
+                                "undercontract",
+                                "undercontract-icon",
+                                "sale",
+                                "sale-icon",
+                                "notqualified",
+                                "notqualified-icon",
+                                ["newowner"],
+                                "new-move-in",
+                                "house-circle-icon"
+                            ],
+                            22,
+                            [
+                                "match",
+                                ["get", "contact_status"],
+                                "interested",
+                                "interested-icon",
+                                "notinterested",
+                                "notinterested-icon",
+                                "nothome",
+                                "nothome-icon",
+                                "comeback",
+                                "comeback-icon",
+                                "undercontract",
+                                "undercontract-icon",
+                                "sale",
+                                "sale-icon",
+                                "notqualified",
+                                "notqualified-icon",
+                                ["newowner"],
+                                "newowner-icon",
+                                "house-circle-icon"
+                            ]
+                        ],
+                        "icon-size": [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            12,
+                            0,
+                            18,
+                            1.25
+                        ],
+                        "icon-allow-overlap": true,
+                    }
+                });
+
+
+                /////    EVENTS    ////////
+
+                map.on('boxzoomend', () => {
+                    console.log('A boxzoomend event occurred.');
+                });
+
+                map.on('zoomend', () => {
+                    console.log('A zoomend event occurred.');
+                });
+
+                map.on('dragend', () => {
+                    console.log('A dragend event occurred.');
+                });
+
+                map.on('moveend', () => {
+                    console.log('A moveend event occurred.');
+                    loadList(false);
+                });
+
+
+                ////// HOVERED STATE ICON COLOR CHANGE //////
+                map.on('click', 'highlighted-house', (e) => {
+                    map.setFeatureState({
+                        source: 'homeowners',
+                        id: hoveredStateId
+                    }, { hover: true });
+                    map.getCanvas().style.cursor = 'pointer';
+                    if (e.features.length > 0) {
+                        console.log("OPSSSSS::: ", hoveredStateId)
+                        if (hoveredStateId) {
+
+                            map.setFeatureState({
+                                source: 'homeowners',
+                                id: hoveredStateId
+                            }, { hover: false });
+                        }
+
+                        //HOVERED STATE ICON COLOR CHANGE//
+                        hoveredStateId = e.features[0].id;
+                        map.setFeatureState({
+                            source: 'homeowners',
+                            id: hoveredStateId
+                        }, { hover: false });
+                    }
+                });
+                //GET COORDINATES on Click//
+                let lng;
+                let lat;
+
+                map.on('click', ({ point, lngLat }) => {
+                    console.log('event1')
+                    const features = map.queryRenderedFeatures(point, { pixel: ['homeowners'], limit: 1, radius: 1 });
+                    console.log(point)
+                    if (features.length > 0) {
+                        if (hoveredStateId == features[0].id) {
+                            map.setFeatureState({ source: 'homeowners', id: hoveredStateId },
+                                { hover: true });
+                        }
+                    } else {
+                        map.setFeatureState({ source: 'homeowners', id: hoveredStateId },
+                            { hover: false });
+                    }
+
+
+                    lng = lngLat.lng;
+                    lat = lngLat.lat;
+                    console.log("lng:", `${lng}`, "lat:", `${lat}`);
+                    /*  window.parent.bubble_fn_myCoordsLng(lng);
+                      window.parent.bubble_fn_myCoordsLat(lat);  */
+                    const lngDisplay = document.getElementById('lng');
+                    const latDisplay = document.getElementById('lat');
+                });
+
+                map.on('click', ({ point }) => {
+                    let sidebar_visible = document.getElementById('sidebar').style.display;
+                    if (sidebar_visible != 'none') {
+                        document.getElementById('sidebar').style.display = 'none';
+                    }
+
+                    // update(map);
+                    console.log('event2')
+                    const features = map.queryRenderedFeatures
+                        (point, {
+                            pixel: ['homeowners'], limit: 1,
+                        });
+
+                    if (!features.length) { return; }
+                    console.log(`${map.queryRenderedFeatures}`);
+                    /*      window.parent.bubble_fn_houseInfo(`${map.queryRenderedFeatures}`) */
+                    const feature = features[0];
+                    let coord = JSON.stringify(feature.geometry.coordinates);
+                    const popup = new mapboxgl.Popup({ offset: [0, 0], closeButton: false })
+                        .setLngLat(feature.geometry.coordinates)
+                        .setHTML(
+                            `
+                                            <h1>
+                                            <div><button class="map-button button buttonNH" data-contact-status="NH" data-location="${coord}">NH</button></div>
+                                            <div><button class="map-button button buttonNI" data-contact-status="NI" data-location="${coord}">NI</button></div>
+                                            <div><button class="map-button button buttonNQ" data-contact-status="NQ" data-location="${coord}">NQ</button></div>
+                                            <div><button class="map-button button buttonCR" data-contact-status="CR" data-location="${coord}">CR</button></div>
+                                            <div><button class="map-button button buttonCB" data-contact-status="CB" data-location="${coord}">CB</button></div>
+                                            <div><button class="map-button button buttonUC" data-contact-status="UC" data-location="${coord}">UC</button></div>
+                                            </h1>
+
+                                            <h2>${feature.properties.owner_name}</h2>
+                                            <h3>${feature.properties.address}
+                                            <br> Contact Status : ${feature.properties.contact_status}
+                                            <br> Square Feet : ${feature.properties.square_feet}
+                                            <br> Last Sold : ${feature.properties.last_sold}
+                                            <br> Year Built : ${feature.properties.year_built}
+                                            <br> Last Sold : ${feature.properties.county}
+                                            <br> Property Type : ${feature.ID}</h3>
+
+                                            <h4>
+                                            <div><button class="map-button button buttonA" data-location="${coord}">A</button></div>
+                                            <div><button class="map-button button buttonB" data-location="${coord}">B</button></div>
+                                            <div><button class="map-button button buttonC" data-location="${coord}">C</button></div>
+                                            <div><button class="map-button button buttonD" data-location="${coord}">D</button></div>
+                                            <div><button class="map-button button buttonE" data-location="${coord}">E</button></div>
+                                            <div><button class="map-button button buttonX" data-contact-status="none" data-location="${coord}">X</button></div>
+
+                                            </h4>`
+
+                        ).addTo(map);
+
+                    const contactStatusMap = {
+                        "NH": "nothome",
+                        "NI": "notinterested",
+                        "CB": "comeback",
+                        "UC": "undercontract",
+                        "CR": "sale",
+                        "NQ": "notqualified",
+                        "X": "none"
+                    };
+
+                    jQuery(document).one('click', '.map-button', function (e) {
+                        //const marker = jQuery('<div>').attr('css','marker').append('<div class="pin1"></div>');
+                        //const el = document.createElement('div');
+                        //el.className = 'pin-holder';
+                        var el = document.createElement('div');
+                        el.className = 'marker';
+                        var properties = geojson2.features[hoveredStateId].properties,
+                            contactStatus = contactStatusMap[jQuery(this).data('contact-status')];
+                        console.log("contactstatus:")
+                        console.log("IDD:: ", geojson2.features[hoveredStateId].id)
+                        console.log(contactStatus)
+
+
+                        geojson2.features[hoveredStateId].properties.contact_status = contactStatus;
+                        axios.post('https://us-central1-halo-map-application.cloudfunctions.net/updateContactStatus', {
+
+                            uid: geojson2.features[hoveredStateId].id,
+                            contact_status: contactStatus || 'none',
+
+                        }, {
+                            headers: {
+                                "auth_key_api": "askdjhasldkjahsldh"
+                            }
+                        })
+                            .then(function (response) {
+                                console.log("RESS:: ", response);
+                            })
+                            .catch(function (error) {
+                                console.log("ERRROSS:: ", error);
+                            });
+
+
+                        el.style.backgroundImage = "house-circle-icon";
+                        el.innerHTML = '<span><b></b></span>';
+                        console.warn('marker-coordinates: ' + jQuery(this).data('location'));
+                        console.warn('contact-status: ' + jQuery(this).data('contact-status'));
+
+                        geojson2.features[hoveredStateId].properties.contact_status = contactStatusMap[jQuery(this).data('contact-status')];
+                        const source = map.getSource("homeowners");
+                        source.setData(geojson2);
+
+                        fetch("https://halo-sales-team.bubbleapps.io/version-test/api/1.1/wf/set-data",
+                            {
+                                method: "POST",
+                                body: JSON.stringify({
+                                    properties: geojson2.features[hoveredStateId].properties,
+                                    features: geojson2.features[hoveredStateId]
+                                }),
+                                headers: {
+                                    "Content-type": "application/json; charset=UTF-8"
+                                }
+                            }
+                        )
+                            .then((res) => res.json())
+                            .then((json) => {
+                                console.log(json);
+                            });
+                        /*
+                        map.setFeatureState({
+                            source: 'homeowners',
+                            id: hoveredStateId
+                        }, {contact_status: contactStatusMap[jQuery(this).data('contact-status')]});
+                        */
+                        // make a marker for each feature and add to the map
+                        // new mapboxgl.Marker(el).setLngLat( jQuery(this).data('location')).addTo(map);
+                    });
+                });
+
+                var zoomLevel;
+                function onmove() {
+                    // Get the map bounds - the top-left and bottom-right locations.
+                    var inBounds = [],
+                        bounds = map.getBounds();
+
+                    console.log("onmove: ", {
+                        bounds: map.getBounds(),
+                        zoomLevel: zoomLevel || (zoomLevel = map.getZoom())
+                    });
+                    /*
+                    markers.eachLayer(function(marker) {
+                        // For each marker, consider whether it is currently visible by comparing
+                        // with the current map bounds.
+                        if (bounds.contains(marker.getLatLng())) {
+                            inBounds.push(marker.options.title);
+                        }
+                    });
+                    // Display a list of markers.
+                    console.log(inBounds.join('\n'));*/
+                }
+
+                // map.on('move', onmove);
+
+                // map.on('zoomend', function(){
+                //     console.log("zoom level changed from", zoomLevel, " to ", zoomLevel = map.getZoom());
+                // });
+                // call onmove off the bat so that the list is populated.
+                // otherwise, there will be no markers listed until the map is moved.
+                // onmove();
+                function handleClick(info) {
+                    console.log("handleClick", info);
+                }
+
+                loadList(true);
+            });
+        }
+
+        function buildLocationList(houses) {
+            const listings = document.getElementById('listings');
+            listings.innerHTML = '';
+
+            al = 1;
+            for (const house of houses.features) {
+                al++;
+                if (al < 10) {
+                    console.log(house)
+                }
+                if (house.properties.address == '') {
+                    continue;
+                }
+                /* Add a new listing section to the sidebar. */
+                const listing = listings.appendChild(document.createElement('div'));
+                /* Assign a unique `id` to the listing. */
+                listing.id = `listing-${house.properties.id}`;
+                /* Assign the `item` class to each listing for styling. */
+                listing.className = 'item';
+
+                /* Add the link to the individual listing created above. */
+                const link = listing.appendChild(document.createElement('a'));
+                link.href = '#';
+                link.className = 'title';
+                link.id = `link-${house.properties.id}`;
+                link.innerHTML = `${house.properties.address}`;
+
+                /* Add details to the individual listing. */
+                const details = listing.appendChild(document.createElement('div'));
+                details.innerHTML = `${house.properties.owner_name}`;
+                if (house.properties.phone) {
+                    details.innerHTML += ` &middot; ${house.properties.phoneFormatted}`;
+                }
+
+                /**
+                * Listen to the element and when it is clicked, do four things:
+                * 1. Update the `currentFeature` to the house associated with the clicked link
+                * 2. Fly to the point
+                * 3. Close all other popups and display popup for clicked house
+                * 4. Highlight listing in sidebar (and remove highlight for all other listings)
+                **/
+                link.addEventListener('click', function () {
+                    for (const feature of houses.features) {
+                        if (this.id === `link-${feature.properties.id}`) {
+                            flyToHouse(feature);
+                            createPopUp(feature);
+                        }
+                    }
+                    const activeItem = document.getElementsByClassName('active');
+                    if (activeItem[0]) {
+                        activeItem[0].classList.remove('active');
+                    }
+                    this.parentNode.classList.add('active');
+                });
+            }
+        }
+
+        function addMarkers() {
+            /* For each feature in the GeoJSON object above: */
+            for (const marker of houses.features) {
+                console.log("marker:")
+                console.log(marker)
+                /* Create a div element for the marker. */
+                const el = document.createElement('div');
+                /* Assign a unique `id` to the marker. */
+                el.id = `marker-${marker.properties.id}`;
+                /* Assign the `marker` class to each marker for styling. */
+                el.className = 'marker';
+
+                /**
+                * Create a marker using the div element
+                * defined above and add it to the map.
+                **/
+                new mapboxgl.Marker(el, { offset: [0, -23] })
+                    .setLngLat(marker.geometry.coordinates)
+                    .addTo(map);
+
+                /**
+                * Listen to the element and when it is clicked, do three things:
+                * 1. Fly to the point
+                * 2. Close all other popups and display popup for clicked house
+                * 3. Highlight listing in sidebar (and remove highlight for all other listings)
+                **/
+                el.addEventListener('click', (e) => {
+                    /* Fly to the point */
+                    flyToHouse(marker);
+                    /* Close all other popups and display popup for clicked house */
+                    createPopUp(marker);
+                    /* Highlight listing in sidebar */
+                    const activeItem = document.getElementsByClassName('active');
+                    e.stopPropagation();
+                    if (activeItem[0]) {
+                        activeItem[0].classList.remove('active');
+                    }
+                    const listing = document.getElementById(
+                        `listing-${marker.properties.id}`
+                    );
+                    listing.classList.add('active');
+                });
+            }
+        }
+
+
+        function flyToHouse(currentFeature) {
+            setLoading_secondary(true);
+            console.log("loading began")
+            console.log("xxxxxxxxxx")
+            console.log(currentFeature)
+
+            map.flyTo({
+                center: currentFeature.geometry.coordinates,
+                zoom: 15
+            });
+            setLoading_secondary(false);
+        }
+
+        /////create popups mapbox gl js ///////
+        function createPopUp(currentFeature) {
+            // const popUps = document.getElementsByClassName('mapboxgl-popup');
+            // if (popUps[0]) popUps[0].remove();
+            // const popup = new mapboxgl.Popup({ closeOnClick: false })
+            //     .setLngLat(currentFeature.geometry.coordinates)
+            //     .setHTML(
+            //         `<h3>Sweetgreen</h3><h4>${currentFeature.properties.address}</h4>`
+            //     )
+            //     .addTo(map);
+        }
+
+        function haversine_distance(pos1, pos2) {
+            var R = 3958.8; // Radius of the Earth in miles
+            var rlat1 = pos1.lat * (Math.PI / 180); // Convert degrees to radians
+            var rlat2 = pos2.lat * (Math.PI / 180); // Convert degrees to radians
+            var difflat = rlat2 - rlat1; // Radian difference (latitudes)
+            var difflon = (pos2.lng - pos1.lng) * (Math.PI / 180); // Radian difference (longitudes)
+
+            var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat / 2) * Math.sin(difflat / 2) + Math.cos(rlat1) * Math.cos(rlat2) * Math.sin(difflon / 2) * Math.sin(difflon / 2)));
+            return d;
+        }
+
+        const loadList = async (flag) => {
+            const center = map.getCenter();
+            const bounds = map.getBounds();
+            let r = haversine_distance(center, bounds._ne);
+            console.log("Center", center);
+            console.log("Bounds", bounds);
+            console.log("Radius", r, "miles");
+
+            r = r * 1609.344; // convert mile to meters
+
+            setLoading_secondary(true)
+            if (flag)
+                setLoading(true);
+
+            console.log("loadList");
+            fetch('https://us-central1-halo-map-application.cloudfunctions.net/records', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+                mode: 'cors',
+                body: JSON.stringify({ center: center, bounds: bounds, radius: r }),
+            })
+            .then((res) => res.json())
+            .then((json) => {
+                // console.log(json);
+
+                // let json = await res.json();
+                console.log("data", json);
+
+                if (flag)
+                    setLoading(false);
+                setLoading_secondary(false)
+
+                geojson2 = json;
+                houses = json;
+
+                houses.features.forEach((house, i) => {
+                    house.properties.id = i;
+                });
+
+                buildLocationList(houses);
+                let homeowners = map.getSource('homeowners');
+                homeowners.setData(houses);
+            });
+            return;
+
+        }
+
+        function setVisible(selector, visible) {
+            document.querySelector(selector).style.display = visible ? 'block' : 'none';
+        }
+
+        function setLoading(status) {
+            if (status) {
+                setVisible('#map', false);
+                setVisible('#sidebar', false);
+                setVisible('#openbtn', false);
+                setVisible('#loading', true);
+                setVisible(".loading_spinner", true);
+            } else {
+                setVisible('#sidebar', true);
+                setVisible('#openbtn', true);
+                setVisible('#map', true);
+                setVisible('#loading', false);
+                setVisible(".loading_spinner", false);
+            }
+        }
+
+        // shows loader between screen moves & clicks on the sidebar items and loading while using the app
+        function setLoading_secondary(status) {
+            if (status) {
+                sidebar_width = document.getElementById('sidebar').offsetWidth;
+                console.log(sidebar_width)
+                document.getElementById('loading_spinner').style.marginLeft=(sidebar_width / 2) + 'px';
+                setVisible(".loading_spinner", true);
+            } else {
+                setVisible(".loading_spinner", false);
+            }
+        }
+
+        function update() {
+            console.log("update");
+
+            houses1 = {
+                'type': 'FeatureCollection',
+                'features': []
+            };
+
+            let homeowners = map.getSource('homeowners');
+
+            homeowners.setData(houses1);
+
+        }
+
+        function openNav() {
+            document.getElementById('sidebar').style.display = 'block';
+            // update();
+        }
+
+        window.addEventListener('locationchange', function () {
+            console.log('location changed!');
+        })
+
+        window.addEventListener('hashchange', function () {
+            console.log('hashchange');
+        }, false);
+
+        window.addEventListener('popstate', function () {
+            console.log('popstate');
+
+        });
+
+    </script>
+
+</body>
+
+</html>
