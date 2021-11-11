@@ -6,17 +6,42 @@
     <title>H A L O || M A P S</title>
     <meta name='viewport' content='width=device-width, initial-scale=1' />
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js'></script>
     <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+    <link rel="stylesheet" href="/main.css">
 
+
+
+
+    <script>
+        $.ajax({
+            url: 'https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js',
+            dataType: "script",
+            success: function(){
+                console.log("Loaded: https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js")
+            }
+        });
+        $.ajax({
+            url: 'https://npmcdn.com/@turf/turf/turf.min.js',
+            dataType: "script",
+            success: function(){
+                console.log("Loaded: https://npmcdn.com/@turf/turf/turf.min.js")
+            }
+        });
+
+
+
+    </script>
     <style>
         @import url("https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css");
         @import url("https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css");
         @import url("https://fonts.googleapis.com/css?family=Noto Sans");
-        @import url("https://halosales.app/version-test/housepopup.css");
-        @import url("https://halosales.app/version-test/sidemenu.css");
+/*      @import url("https://halosales.app/version-test/main.css");
+*/ 
+
+
 
         body {
             margin: 0;
@@ -31,86 +56,6 @@
         }
 
 
-        .marker span {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
-            width: 30px;
-            height: 30px;
-            color: #fff;
-            background: #693;
-            border: solid 2px;
-            border-radius: 0 70% 70%;
-            box-shadow: 0 0 2px #000;
-            cursor: pointer;
-            transform-origin: 0 0;
-            transform: rotateZ(-0deg);
-        }
-
-        .marker b {
-            transform: rotateZ(0deg)
-        }
-
-
-
-        h1 {
-            font-size: 22px;
-            margin: 0;
-            font-weight: 400;
-            line-height: 20px;
-            padding: 20px 2px;
-        }
-
-
-        form {
-            background-color: #4654e1;
-            width: 200px;
-            height: 44px;
-            border-radius: 5px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
-
-        input {
-            all: unset;
-            font: 16px system-ui;
-            color: #fff;
-            height: 100%;
-            width: 100%;
-            padding: 6px 10px;
-        }
-
-        ::placeholder {
-            color: #fff;
-            opacity: 0.7;
-        }
-
-
-        .search {
-            all: unset;
-            cursor: pointer;
-            width: 44px;
-            height: 44px;
-        }
-
-        svg {
-            color: #fff;
-            fill: currentColor;
-            width: 24px;
-            height: 24px;
-            padding: 10px;
-        }
-
-        a {
-            color: #404040;
-            text-decoration: none;
-        }
-
-        a:hover {
-            color: #101010;
-        }
 
         #loading {
             display: block;
@@ -121,135 +66,14 @@
             width: 100%;
             height: 100%;
             background-color: rgba(192, 192, 192, 0.5);
-            /* background-image: url("https://halosales.app/version-test/halo-loading-animation"); */
+            background-image: url("https://halosales.app/version-test/halo-loading-animation");
             background-size: 100px;
             background-repeat: no-repeat;
             background-position: center;
         }
 
-        .marker {
-            border: none;
-            cursor: pointer;
-            height: 56px;
-            width: 56px;
-            background-image: url(marker.png);
-        }
 
-        .search_outer {
-            display: flex;
-        }
-        .search_left {
-            flex-grow: 1;
-        }
-        .search_form {
-            width: 90%;
-            margin-top: 7px;
-        }
-/*
-         * loader code begins
-         */
-        .loading_inner {
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            width: 100%;
-            height: 100%;
-        }
-         .lds-spinner {
-  color: official;
-  display: inline-block;
-  position: relative;
-  width: 40px;
-  height: 40px;
-}
-.lds-spinner div {
-  transform-origin: 20px 20px;
-  animation: lds-spinner 1.2s linear infinite;
-}
-.lds-spinner div:after {
-  content: " ";
-  display: block;
-  position: absolute;
-  /* top: 3px;
-  left: 37px;
-  width: 6px;
-  height: 18px;
-  border-radius: 20%; */
-  top: 2px;
-  left: 18px;
-  width: 3px;
-  height: 9px;
-  border-radius: 20%;
-  background: #fff;
-}
-.lds-spinner div:nth-child(1) {
-  transform: rotate(0deg);
-  animation-delay: -1.1s;
-}
-.lds-spinner div:nth-child(2) {
-  transform: rotate(30deg);
-  animation-delay: -1s;
-}
-.lds-spinner div:nth-child(3) {
-  transform: rotate(60deg);
-  animation-delay: -0.9s;
-}
-.lds-spinner div:nth-child(4) {
-  transform: rotate(90deg);
-  animation-delay: -0.8s;
-}
-.lds-spinner div:nth-child(5) {
-  transform: rotate(120deg);
-  animation-delay: -0.7s;
-}
-.lds-spinner div:nth-child(6) {
-  transform: rotate(150deg);
-  animation-delay: -0.6s;
-}
-.lds-spinner div:nth-child(7) {
-  transform: rotate(180deg);
-  animation-delay: -0.5s;
-}
-.lds-spinner div:nth-child(8) {
-  transform: rotate(210deg);
-  animation-delay: -0.4s;
-}
-.lds-spinner div:nth-child(9) {
-  transform: rotate(240deg);
-  animation-delay: -0.3s;
-}
-.lds-spinner div:nth-child(10) {
-  transform: rotate(270deg);
-  animation-delay: -0.2s;
-}
-.lds-spinner div:nth-child(11) {
-  transform: rotate(300deg);
-  animation-delay: -0.1s;
-}
-.lds-spinner div:nth-child(12) {
-  transform: rotate(330deg);
-  animation-delay: 0s;
-}
-@keyframes lds-spinner {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 
-.loading_spinner {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    /* background-color: rgba(192, 192, 192, 0.5); */
-    /* background-color: rgb(220, 215, 205); */
-    z-index: 101;
-}
-        /*
-         * loader code ends
-         */
     </style>
 </head>
 <body>
@@ -268,7 +92,7 @@
                 <div class="search_outer">
                     <div class="search_left">
                         <form role="search" id="form" class="search_form" onsubmit="search_trigger(); return false;">
-                            <input type="search" id="query" name="q" placeholder="Search..."
+                            <input type="search" id="query" name="q" placeholder="Search..." class="search-input"
                                 aria-label="Search through site content" />
                             <button class="search" id="search_magnifier">
                                 <svg viewBox="0 0 1024 1024">
@@ -281,35 +105,34 @@
                     </div>
                     <div class="search_right">
                         <button id="close_sidebar" type="button" class="close" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <!-- <span aria-hidden="true">&times;</span> -->
+                            <img src="https://s3.amazonaws.com/appforest_uf/f1636570633766x922356495134377500/close-menu-button.png" />
                         </button>
                     </div>
                     <div class="clear"></div>
                 </div>
             </div>
             <div id="listings" class="listings"></div>
-
-        </div><button id="openbtn" onclick="openNav()">☰</button>
+            <button id="openbtn" onclick="openNav()">☰</button>
+        </div>
     </container>
 
 
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
-    <!-- <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script> -->
-
-    <!-- <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-// ...
-
-<script defer src="./init-firebase.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
 
+        // const BASE_URL = 'http://192.168.0.119:5001/halo-map-application/us-central1/';
+        const BASE_URL = 'https://us-central1-halo-map-application.cloudfunctions.net/';
+
         $(document).ready(function () {
             setVisible('#sidebar', false);
             setVisible('#openbtn', false);
+
+
+            $("#close_sidebar2").on("click", function () {
+                alert('test')
+            });
 
 
             initMap();
@@ -354,12 +177,12 @@
                 container: 'map',
                 style: 'mapbox://styles/thehaloteam/ckuwsyrcn1x3017rvvlv5s7in',
                 center: [-82.335488, 28.311056],
-                zoom: 15.0,
+                zoom: 8,
                 collectResourceTiming: true,
                 antialias: true,
                 maxZoom: 20,
-                minZoom: 10,
-                hash: true,
+                minZoom: 8,
+                hash: false,
                 pitchWithRotate: false,
                 renderWorldCopies: false,
             });
@@ -522,10 +345,12 @@
 
                 ////// HOVERED STATE ICON COLOR CHANGE //////
                 map.on('click', 'highlighted-house', (e) => {
+                    /*
                     map.setFeatureState({
                         source: 'homeowners',
                         id: hoveredStateId
                     }, { hover: true });
+                    */
                     map.getCanvas().style.cursor = 'pointer';
                     if (e.features.length > 0) {
                         console.log("OPSSSSS::: ", hoveredStateId)
@@ -563,6 +388,15 @@
                             { hover: false });
                     }
 
+                    if( prev_sel_id )   // remove yellow circle for previous selected
+                    {
+                        map.setFeatureState({
+                            source: 'homeowners',
+                            id: prev_sel_id
+                        }, { hover: false });
+                        prev_sel_id = null;
+                    }
+
 
                     lng = lngLat.lng;
                     lat = lngLat.lat;
@@ -588,14 +422,17 @@
 
                     if (!features.length) { return; }
                     console.log(`${map.queryRenderedFeatures}`);
-                    /*      window.parent.bubble_fn_houseInfo(`${map.queryRenderedFeatures}`) */
+
+
                     const feature = features[0];
                     let coord = JSON.stringify(feature.geometry.coordinates);
+                    let notes = feature.properties.notes ? feature.properties.notes : '';
+                    let appointment_time = feature.properties.appointment_time ? feature.properties.appointment_time : '';
                     const popup = new mapboxgl.Popup({ offset: [0, 0], closeButton: false })
                         .setLngLat(feature.geometry.coordinates)
                         .setHTML(
                             `
-                                            <h1>
+                                            <h1 style="justify-content: space-between;">
                                             <div><button class="map-button button buttonNH" data-contact-status="NH" data-location="${coord}">NH</button></div>
                                             <div><button class="map-button button buttonNI" data-contact-status="NI" data-location="${coord}">NI</button></div>
                                             <div><button class="map-button button buttonNQ" data-contact-status="NQ" data-location="${coord}">NQ</button></div>
@@ -604,26 +441,62 @@
                                             <div><button class="map-button button buttonUC" data-contact-status="UC" data-location="${coord}">UC</button></div>
                                             </h1>
 
-                                            <h2>${feature.properties.owner_name}</h2>
-                                            <h3>${feature.properties.address}
-                                            <br> Contact Status : ${feature.properties.contact_status}
-                                            <br> Square Feet : ${feature.properties.square_feet}
-                                            <br> Last Sold : ${feature.properties.last_sold}
-                                            <br> Year Built : ${feature.properties.year_built}
-                                            <br> Last Sold : ${feature.properties.county}
-                                            <br> Property Type : ${feature.ID}</h3>
+                                            <h2>${feature.properties.address}<br>${feature.properties.owner_name}</h2>
+                                            <div style="overflow-y:scroll; height: 130px; overflow-x: hidden;">
 
-                                            <h4>
-                                            <div><button class="map-button button buttonA" data-location="${coord}">A</button></div>
-                                            <div><button class="map-button button buttonB" data-location="${coord}">B</button></div>
-                                            <div><button class="map-button button buttonC" data-location="${coord}">C</button></div>
-                                            <div><button class="map-button button buttonD" data-location="${coord}">D</button></div>
-                                            <div><button class="map-button button buttonE" data-location="${coord}">E</button></div>
-                                            <div><button class="map-button button buttonX" data-contact-status="none" data-location="${coord}">X</button></div>
+                                                <h5 class="note-content" style="min-height: 44px;  display: flex; align-items: center;">Note: ${notes}</h5>
+                                                <h5 class="appointment-content" style="min-height: 44px;  display: flex; align-items: center;border-top: 1px solid gray; border-bottom: 1px solid gray">Appointment: ${appointment_time}</h5>
+
+                                                <div id="close_sidebar2" class="inputSlider" style="display: flex; width:200%; flex-direction: row; background-color: white; min-height: 44px; align-items: center; display: flex;">
+
+
+                                                    <div style="width: 100%;">
+
+                                                    <button style="width: 100%; text-align: left; color: #03A9F4; border: none; background-color: transparent;" onclick="(() => { document.getElementById('close_sidebar2').className = document.getElementById('close_sidebar2').className + ' inputSliderTransform'})()">Tap to add Note</button>
+
+                                                    </div>
+
+                                                    <div style="display: flex; width: 100%;">
+                                                        <input type='text' id='input' tabindex='-1' class="note" placeholder='note'>
+                                                        <button onclick="(() => { document.getElementById('close_sidebar2').className = document.getElementById('close_sidebar2').className.replace(' inputSliderTransform', '')})()" type='button' class="note-submit">Submit</button>
+                                                    </div>
+                                                </div>
+
+                                                <h3>
+                                                <br> Contact Status : ${feature.properties.contact_status}
+                                                <br> Square Feet : ${feature.properties.square_feet}
+                                                <br> Last Sold : ${feature.properties.last_sold}
+                                                <br> Year Built : ${feature.properties.year_built}
+                                                <br> Last Sold : ${feature.properties.county}
+                                                <br> Property Type : ${feature.ID}</h3>
+                                                </div>
+                                            <h4 style="justify-content: space-between;">
+                                            <div><button class="map-button button buttonA" style="border: none;" data-location="${coord}">
+<img style="width: 22px" src="https://s3.amazonaws.com/appforest_uf/f1636570633766x922356495134377500/close-menu-button.png" />
+                                            </button></div>
+                                            <div><button class="map-button button buttonB" style="border: none; overflow: hidden; position: relative;" data-location="${coord}">
+
+
+<img style="width: 22px; position: absolute; left: 4px; top: 3px;" src="https://s3.amazonaws.com/appforest_uf/f1636570633766x922356495134377500/close-menu-button.png" />
+    <input type="datetime-local" class="appointment" name="appointment" style="opacity: 0">
+                                            </div>
+                                            <div><button class="map-button button buttonC" style="border: none;" data-location="${coord}">
+<img style="width: 22px" src="https://s3.amazonaws.com/appforest_uf/f1636570633766x922356495134377500/close-menu-button.png" />
+                                            </button></div>
+                                            <div><button class="map-button button buttonD" style="border: none;" data-location="${coord}">
+<img style="width: 22px" src="https://s3.amazonaws.com/appforest_uf/f1636570633766x922356495134377500/close-menu-button.png" />
+                                            </button></div>
+                                            <div><button class="map-button button buttonE" style="border: none;" data-location="${coord}">
+<img style="width: 22px" src="https://s3.amazonaws.com/appforest_uf/f1636570633766x922356495134377500/close-menu-button.png" />
+                                            </button></div>
+                                            <div><button class="map-button button buttonX" style="border: none;" data-contact-status="none" data-location="${coord}">X</button></div>
 
                                             </h4>`
 
+
                         ).addTo(map);
+
+                    //window.parent.bubble_fn_houseinfo(JSON.stringify(feature.properties));
 
                     const contactStatusMap = {
                         "NH": "nothome",
@@ -649,11 +522,12 @@
 
 
                         geojson2.features[hoveredStateId].properties.contact_status = contactStatus;
-                        axios.post('https://us-central1-halo-map-application.cloudfunctions.net/updateContactStatus', {
+                        let zip = geojson2.features[hoveredStateId].properties.zip;
+                        axios.post(`${BASE_URL}updateContactStatus`, {
 
                             uid: geojson2.features[hoveredStateId].id,
                             contact_status: contactStatus || 'none',
-
+                            zip: zip
                         }, {
                             headers: {
                                 "auth_key_api": "askdjhasldkjahsldh"
@@ -692,6 +566,9 @@
                             .then((json) => {
                                 console.log(json);
                             });
+
+                        buildLocationList(houses);
+
                         /*
                         map.setFeatureState({
                             source: 'homeowners',
@@ -701,6 +578,23 @@
                         // make a marker for each feature and add to the map
                         // new mapboxgl.Marker(el).setLngLat( jQuery(this).data('location')).addTo(map);
                     });
+                });
+
+                //$( ".note-submit" ).on( "click", function() {
+                jQuery(document).on('click', '.note-submit', function (e) {
+                    let house = geojson2.features[hoveredStateId];
+                    let note = $('input.note').val();
+                    updateNote(house, note);
+                    $('.note-content').html('Note: ' + note);
+                });
+
+                //$( ".appointment-submit" ).on( "click", function() {
+                jQuery(document).on('click', '.appointment-submit', function (e) {
+                    let house = geojson2.features[hoveredStateId];
+                    let appointment = $('input.appointment').val();
+                    updateAppointment(house, appointment);
+                    $('.appointment-content').html('Appointment: ' + appointment);
+
                 });
 
                 var zoomLevel;
@@ -741,9 +635,174 @@
             });
         }
 
+        function updateContactStatus(feature, status) {
+            var properties = feature.properties;
+
+            let zip = feature.properties.zip;
+
+            axios.post(`${BASE_URL}updateContactStatus`, {
+                uid: feature.id,
+                contact_status: status || 'none',
+                zip: zip
+            }, {
+                headers: {
+                    "auth_key_api": "askdjhasldkjahsldh"
+                }
+            })
+                .then(function (response) {
+                    console.log("RESS:: ", response);
+                })
+                .catch(function (error) {
+                    console.log("ERRROSS:: ", error);
+                });
+
+
+            for(var i = 0; i < geojson2.features.length; i++)
+            {
+                if( geojson2.features[i].id == feature.id )
+                    geojson2.features[i].properties.contact_status = status;
+            }
+            const source = map.getSource("homeowners");
+            source.setData(geojson2);
+
+            fetch("https://halo-sales-team.bubbleapps.io/version-test/api/1.1/wf/set-data",
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        properties: feature.properties,
+                        features: feature
+                    }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                }
+            )
+                .then((res) => res.json())
+                .then((json) => {
+                    console.log(json);
+                });
+
+            buildLocationList(houses);
+        }
+
+
+        function updateNote(feature, notes) {
+            var properties = feature.properties;
+
+            let zip = feature.properties.zip;
+
+            axios.post(`${BASE_URL}updateNote`, {
+                uid: feature.id,
+                notes: notes || 'none',
+                zip: zip
+            }, {
+                headers: {
+                    "auth_key_api": "askdjhasldkjahsldh"
+                }
+            })
+                .then(function (response) {
+                    console.log("RESS:: ", response);
+                })
+                .catch(function (error) {
+                    console.log("ERRROSS:: ", error);
+                });
+
+            var selected_id = 0;
+            for(var i = 0; i < geojson2.features.length; i++)
+            {
+                if( geojson2.features[i].id == feature.id )
+                {
+                    selected_id = i;
+                    geojson2.features[i].properties.notes = notes;
+                }
+            }
+            const source = map.getSource("homeowners");
+            source.setData(geojson2);
+
+            fetch("https://halo-sales-team.bubbleapps.io/version-test/api/1.1/wf/set-data",
+            {
+                    method: "POST",
+                    body: JSON.stringify({
+                        properties: geojson2.features[selected_id].properties,
+                        features: geojson2.features[selected_id]
+                    }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                }
+            )
+                .then((res) => res.json())
+                .then((json) => {
+                    console.log(json);
+                });
+        }
+
+        function updateAppointment(feature, appointment_time) {
+            var properties = feature.properties;
+
+            let zip = feature.properties.zip;
+
+            axios.post(`${BASE_URL}updateAppointment`, {
+                uid: feature.id,
+                appointment_time: appointment_time || 'none',
+                zip: zip
+            }, {
+                headers: {
+                    "auth_key_api": "askdjhasldkjahsldh"
+                }
+            })
+                .then(function (response) {
+                    console.log("RESS:: ", response);
+                })
+                .catch(function (error) {
+                    console.log("ERRROSS:: ", error);
+                });
+
+            var selected_id = 0;
+            for(var i = 0; i < geojson2.features.length; i++)
+            {
+                if( geojson2.features[i].id == feature.id )
+                {
+                    selected_id = i;
+                    geojson2.features[i].properties.appointment_time = appointment_time;
+                }
+            }
+            const source = map.getSource("homeowners");
+            source.setData(geojson2);
+
+            fetch("https://halo-sales-team.bubbleapps.io/version-test/api/1.1/wf/set-data",
+            {
+                    method: "POST",
+                    body: JSON.stringify({
+                        properties: geojson2.features[selected_id].properties,
+                        features: geojson2.features[selected_id]
+                    }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                }
+            )
+                .then((res) => res.json())
+                .then((json) => {
+                    console.log(json);
+                });
+        }
+
+
         function buildLocationList(houses) {
             const listings = document.getElementById('listings');
             listings.innerHTML = '';
+
+
+            const contactStatusMap = {
+                "nothome" : "NH",
+                "notinterested" : "NI",
+                "comeback" : "CB",
+                "undercontract" : "UC",
+                "sale" : "CR",
+                "notqualified" : "NQ",
+            };
+
 
             al = 1;
             for (const house of houses.features) {
@@ -768,12 +827,15 @@
                 link.id = `link-${house.properties.id}`;
                 link.innerHTML = `${house.properties.address}`;
 
+                //<button class="map-button button buttonCB" data-contact-status="CB" data-location="${coord}">CB</button>
+
                 /* Add details to the individual listing. */
                 const details = listing.appendChild(document.createElement('div'));
                 details.innerHTML = `${house.properties.owner_name}`;
                 if (house.properties.phone) {
                     details.innerHTML += ` &middot; ${house.properties.phoneFormatted}`;
                 }
+
 
                 /**
                 * Listen to the element and when it is clicked, do four things:
@@ -787,6 +849,7 @@
                         if (this.id === `link-${feature.properties.id}`) {
                             flyToHouse(feature);
                             createPopUp(feature);
+                            break;
                         }
                     }
                     const activeItem = document.getElementsByClassName('active');
@@ -795,6 +858,131 @@
                     }
                     this.parentNode.classList.add('active');
                 });
+
+                const contact_status = house.properties.contact_status;
+                const icon = document.createElement('button');
+                let oldClassName = '';
+                let oldIconText = '';
+                if( contactStatusMap[contact_status] )
+                {
+                    oldClassName = "button button" + contactStatusMap[contact_status];
+                    oldIconText = contactStatusMap[contact_status];
+                }
+                else
+                {
+                    oldClassName = "button buttonNone";
+                    oldIconText = "";
+    icon.style.background = 'transparent';
+
+                }
+
+
+                icon.className = oldClassName;
+                icon.innerHTML = oldIconText;
+                listing.appendChild(icon);
+
+                const buttons = listing.appendChild(document.createElement('div'));
+
+                for (var key of Object.keys(contactStatusMap)) {
+                    let status = contactStatusMap[key];
+                    let button = buttons.appendChild(document.createElement('button'));
+                    button.className = "map-button button button" + status;
+                    button.innerText= status;
+
+                    let key1 = key;
+
+                    button.onclick = function(event) {
+                        updateContactStatus(house, key1);
+                    }
+                }
+
+                buttons.style.display = 'none';
+
+
+                icon.onclick = function(event) {
+                    console.log(event);
+
+                    if( buttons.style.display == 'none' )
+                    {
+                        icon.style.transition = '';
+                        icon.style.opacity = 0;
+
+                        const dimensions = icon.getBoundingClientRect()
+
+                        var body = document.body;
+                        var docEl = document.documentElement;
+
+                        var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+                        var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+                        var clientTop = docEl.clientTop || body.clientTop || 0;
+                        var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+
+                        var top  = dimensions.top +  scrollTop - clientTop;
+                        var left = dimensions.left + scrollLeft - clientLeft;
+
+                        icon.style.top =  (top - 11) + 'px';
+                        icon.style.left =  left + 50 + 'px';
+                        icon.style.position = 'fixed';
+
+
+
+
+                        //link.style.display = 'none';
+                        //details.style.display = 'none';
+                        buttons.style.backgroundColor = 'gray';
+                        buttons.style.display = 'flex';
+                        buttons.style.justifyContent = 'space-around';
+                        buttons.style.alignItems = 'center';
+                        buttons.style.height = '100%';
+                        buttons.style.position = 'absolute';
+                        buttons.style.top = 0;
+                        buttons.style.left = 0;
+                        buttons.style.width = '100%';
+                        buttons.style.transform = 'translateX(-100%)';
+                        buttons.style.marginRight = '10px';
+                        buttons.style.transition = '.5s';
+                        buttons.style.paddingRight = '10px';
+
+
+                        //buttons.classList.add("slide");
+                        icon.className = "button buttonNone";
+                        icon.innerText = 'X';
+
+                        setTimeout(() => {
+
+                            buttons.style.transform = 'translateX(0)';
+
+                            icon.style.transition = '.5s opacity';
+                            icon.style.opacity = 1;
+                        }, 0)
+
+                    }
+                    else
+                    {
+                            // icon.style.opacity = 1;
+                        icon.style.position = 'absolute';
+                        icon.style.top =  0;
+                        icon.style.right =  0;
+                        icon.style.left = null
+                        buttons.style.transform = 'translateX(-100%)';
+
+                        link.style.display = 'block';
+                        details.style.display = 'block';
+
+                        //buttons.style.display = 'none';
+                        //buttons.classList.remove("slide");
+                        icon.style.display = 'block'
+                        icon.className = oldClassName;
+                        icon.innerText = oldIconText;
+
+                        setTimeout(() => {
+                            buttons.style.display = 'none';
+                        },550)
+
+
+                    }
+                }
             }
         }
 
@@ -843,6 +1031,7 @@
             }
         }
 
+        let prev_sel_id = null;
 
         function flyToHouse(currentFeature) {
             setLoading_secondary(true);
@@ -850,11 +1039,35 @@
             console.log("xxxxxxxxxx")
             console.log(currentFeature)
 
+            const features = map.querySourceFeatures("homeowners");
+
+            const selected = features.find(item => item.properties.id == currentFeature.properties.id);
+
             map.flyTo({
                 center: currentFeature.geometry.coordinates,
                 zoom: 15
             });
             setLoading_secondary(false);
+
+            // highlight selected house
+            if( prev_sel_id )   // remove yellow circle for previous selected
+            {
+                map.setFeatureState({
+                    source: 'homeowners',
+                    id: prev_sel_id
+                }, { hover: false });
+            }
+            if( selected )
+            {
+                let sel_id = selected.id;
+                map.setFeatureState({
+                    source: 'homeowners',
+                    id: sel_id
+                }, { hover: true });
+
+                prev_sel_id = sel_id;
+            }
+
         }
 
         /////create popups mapbox gl js ///////
@@ -883,26 +1096,51 @@
         const loadList = async (flag) => {
             const center = map.getCenter();
             const bounds = map.getBounds();
+            const zoom = map.getZoom();
+
             let r = haversine_distance(center, bounds._ne);
             console.log("Center", center);
             console.log("Bounds", bounds);
             console.log("Radius", r, "miles");
+            console.log("Zoom", zoom);
 
             r = r * 1609.344; // convert mile to meters
+
+
+            // at the first time, we cannot detect city/country/zip code
+            let city = '';
+            let county = '';
+            let zip = '';
+
+            let geocode_url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${center.lng}%2C%20${center.lat}.json?access_token=pk.eyJ1IjoidGhlaGFsb3RlYW0iLCJhIjoiY2ttcDB2YjdrMDdmZjJxcW0xMG10b3VjZSJ9.bRVI_7ubNYtwMXX5qAGxVA`;
+            console.log('geocode_url', geocode_url);
+            let data = await fetch(geocode_url);
+            let geocode = await data.json();
+            console.log('geocode', geocode);
+
+            // get zip code
+            for(var i = 0; i < geocode.features.length; i++)
+            {
+                let feature = geocode.features[i];
+                if( feature.id.includes('postcode'))
+                    zip = feature.text;
+            }
+
+            console.log('zip', zip);
 
             setLoading_secondary(true)
             if (flag)
                 setLoading(true);
 
             console.log("loadList");
-            fetch('https://us-central1-halo-map-application.cloudfunctions.net/records', {
+            fetch(`${BASE_URL}records`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
                 },
                 mode: 'cors',
-                body: JSON.stringify({ center: center, bounds: bounds, radius: r }),
+                body: JSON.stringify({ center: center, bounds: bounds, radius: r, zip}),
             })
             .then((res) => res.json())
             .then((json) => {
@@ -993,6 +1231,33 @@
             console.log('popstate');
 
         });
+
+/*
+        function expand() {
+            slider.className = 'expanded';
+            setTimeout(function() {
+                input.focus();
+            }, 500);
+        }
+
+        function collapse() {
+            slider.className = 'collapsed';
+            input.blur();
+        }
+
+        toggle.onclick = expand;
+
+        input.onblur = function() {
+            setTimeout(collapse, 100);
+        }
+
+        buttonWithText.onsubmit = function(e) {
+            e.preventDefault();
+            alert("New username: " + input.value);
+            collapse();
+        }
+*/
+        // main problem is to get county/city/zip from lat/lng
 
     </script>
 
