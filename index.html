@@ -10,7 +10,7 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js'></script>
     <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
-    <link rel="stylesheet" href="./main.css" type="text/css" />>
+    <link rel="stylesheet" href="./main.css" type="text/css" />
 
 
 
@@ -19,14 +19,14 @@
         $.ajax({
             url: 'https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js',
             dataType: "script",
-            success: function(){
+            success: function () {
                 console.log("Loaded: https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js")
             }
         });
         $.ajax({
             url: 'https://npmcdn.com/@turf/turf/turf.min.js',
             dataType: "script",
-            success: function(){
+            success: function () {
                 console.log("Loaded: https://npmcdn.com/@turf/turf/turf.min.js")
             }
         });
@@ -38,8 +38,8 @@
         @import url("https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css");
         @import url("https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css");
         @import url("https://fonts.googleapis.com/css?family=Noto Sans");
-/*      @import url("https://halosales.app/version-test/main.css");
-*/ 
+        /*      @import url("https://halosales.app/version-test/main.css");
+*/
 
 
 
@@ -47,15 +47,6 @@
             margin: 0;
             padding: 0;
         }
-
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-
-
 
         #loading {
             display: block;
@@ -72,10 +63,47 @@
             background-position: center;
         }
 
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
 
+        .mapboxgl-popup {
+            flex-grow: 20px;
+            margin: 0px;
+            padding: 0px;
+            border-radius: 15px;
+            border-color: transparent;
+            box-sizing: inherit;
+            box-shadow: none;
+            flex-shrink: 20px;
+        }
 
+        .mapboxgl-popup-content {
+            overflow-y: hidden;
+            overflow-x: hidden;
+            padding: 10px;
+            width: auto;
+            background-color: none;
+            justify-content: space-between;
+            max-width: inherit;
+            max-height: inherit;
+            background: none;
+            border-color: none;
+            border-radius: 15px;
+            flex-shrink: 30px;
+            flex-direction: row;
+            box-shadow: none;
+            border-color: transparent;
+            flex-grow: 1;
+            box-shadow: none;
+            color: none;
+        }
     </style>
 </head>
+
 <body>
     <div id="map" class="map"></div>
 
@@ -83,8 +111,27 @@
     <div id="loading">
     </div>
     <div class="loading_spinner" id="loading_spinner">
-        <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="lds-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
+
+
+    <button id="openbtn" onclick="openNav()">
+        <img src="https://s3.amazonaws.com/appforest_uf/f1636655984578x108106999889816980/static-black-menu.svg"
+            height="30px width=" 30px" />
+    </button>
 
     <container sidemenu>
         <div id="sidebar" class="sidebar">
@@ -106,15 +153,18 @@
                     <div class="search_right">
                         <button id="close_sidebar" type="button" class="close" aria-label="Close">
                             <!-- <span aria-hidden="true">&times;</span> -->
-                            <img src="https://s3.amazonaws.com/appforest_uf/f1636570633766x922356495134377500/close-menu-button.png" />
+                            <img
+                                src="https://s3.amazonaws.com/appforest_uf/f1636570633766x922356495134377500/close-menu-button.png" />
                         </button>
                     </div>
                     <div class="clear"></div>
                 </div>
             </div>
             <div id="listings" class="listings"></div>
-            <button id="openbtn" onclick="openNav()">☰</button>
-        </div>
+            <div>
+
+
+            </div>
     </container>
 
 
@@ -347,8 +397,8 @@
                 map.on('click', 'highlighted-house', (e) => {
                     /*
                     map.setFeatureState({
-                        source: 'homeowners',
-                        id: hoveredStateId
+                    source: 'homeowners',
+                    id: hoveredStateId
                     }, { hover: true });
                     */
                     map.getCanvas().style.cursor = 'pointer';
@@ -388,7 +438,7 @@
                             { hover: false });
                     }
 
-                    if( prev_sel_id )   // remove yellow circle for previous selected
+                    if (prev_sel_id)   // remove yellow circle for previous selected
                     {
                         map.setFeatureState({
                             source: 'homeowners',
@@ -401,8 +451,8 @@
                     lng = lngLat.lng;
                     lat = lngLat.lat;
                     console.log("lng:", `${lng}`, "lat:", `${lat}`);
-                  //    window.parent.bubble_fn_myCoordsLng(lng);
-                  //    window.parent.bubble_fn_myCoordsLat(lat);
+                    //    window.parent.bubble_fn_myCoordsLng(lng);
+                    //    window.parent.bubble_fn_myCoordsLat(lat);
                     const lngDisplay = document.getElementById('lng');
                     const latDisplay = document.getElementById('lat');
                 });
@@ -496,7 +546,7 @@
 
                         ).addTo(map);
 
-                    
+
                     window.parent.bubble_fn_housedata(JSON.stringify(feature.properties));
 
                     const contactStatusMap = {
@@ -658,9 +708,8 @@
                 });
 
 
-            for(var i = 0; i < geojson2.features.length; i++)
-            {
-                if( geojson2.features[i].id == feature.id )
+            for (var i = 0; i < geojson2.features.length; i++) {
+                if (geojson2.features[i].id == feature.id)
                     geojson2.features[i].properties.contact_status = status;
             }
             const source = map.getSource("homeowners");
@@ -709,10 +758,8 @@
                 });
 
             var selected_id = 0;
-            for(var i = 0; i < geojson2.features.length; i++)
-            {
-                if( geojson2.features[i].id == feature.id )
-                {
+            for (var i = 0; i < geojson2.features.length; i++) {
+                if (geojson2.features[i].id == feature.id) {
                     selected_id = i;
                     geojson2.features[i].properties.notes = notes;
                 }
@@ -721,7 +768,7 @@
             source.setData(geojson2);
 
             fetch("https://halo-sales-team.bubbleapps.io/version-test/api/1.1/wf/set-data",
-            {
+                {
                     method: "POST",
                     body: JSON.stringify({
                         properties: geojson2.features[selected_id].properties,
@@ -760,10 +807,8 @@
                 });
 
             var selected_id = 0;
-            for(var i = 0; i < geojson2.features.length; i++)
-            {
-                if( geojson2.features[i].id == feature.id )
-                {
+            for (var i = 0; i < geojson2.features.length; i++) {
+                if (geojson2.features[i].id == feature.id) {
                     selected_id = i;
                     geojson2.features[i].properties.appointment_time = appointment_time;
                 }
@@ -772,7 +817,7 @@
             source.setData(geojson2);
 
             fetch("https://halo-sales-team.bubbleapps.io/version-test/api/1.1/wf/set-data",
-            {
+                {
                     method: "POST",
                     body: JSON.stringify({
                         properties: geojson2.features[selected_id].properties,
@@ -796,12 +841,12 @@
 
 
             const contactStatusMap = {
-                "nothome" : "NH",
-                "notinterested" : "NI",
-                "comeback" : "CB",
-                "undercontract" : "UC",
-                "sale" : "CR",
-                "notqualified" : "NQ",
+                "nothome": "NH",
+                "notinterested": "NI",
+                "comeback": "CB",
+                "undercontract": "UC",
+                "sale": "CR",
+                "notqualified": "NQ",
             };
 
 
@@ -864,16 +909,14 @@
                 const icon = document.createElement('button');
                 let oldClassName = '';
                 let oldIconText = '';
-                if( contactStatusMap[contact_status] )
-                {
+                if (contactStatusMap[contact_status]) {
                     oldClassName = "button button" + contactStatusMap[contact_status];
                     oldIconText = contactStatusMap[contact_status];
                 }
-                else
-                {
+                else {
                     oldClassName = "button buttonNone";
                     oldIconText = "";
-    icon.style.background = 'transparent';
+                    icon.style.background = 'transparent';
 
                 }
 
@@ -888,11 +931,11 @@
                     let status = contactStatusMap[key];
                     let button = buttons.appendChild(document.createElement('button'));
                     button.className = "map-button button button" + status;
-                    button.innerText= status;
+                    button.innerText = status;
 
                     let key1 = key;
 
-                    button.onclick = function(event) {
+                    button.onclick = function (event) {
                         updateContactStatus(house, key1);
                     }
                 }
@@ -900,11 +943,10 @@
                 buttons.style.display = 'none';
 
 
-                icon.onclick = function(event) {
+                icon.onclick = function (event) {
                     console.log(event);
 
-                    if( buttons.style.display == 'none' )
-                    {
+                    if (buttons.style.display == 'none') {
                         icon.style.transition = '';
                         icon.style.opacity = 0;
 
@@ -919,11 +961,11 @@
                         var clientTop = docEl.clientTop || body.clientTop || 0;
                         var clientLeft = docEl.clientLeft || body.clientLeft || 0;
 
-                        var top  = dimensions.top +  scrollTop - clientTop;
+                        var top = dimensions.top + scrollTop - clientTop;
                         var left = dimensions.left + scrollLeft - clientLeft;
 
-                        icon.style.top =  (top - 11) + 'px';
-                        icon.style.left =  left + 50 + 'px';
+                        icon.style.top = (top - 11) + 'px';
+                        icon.style.left = left + 50 + 'px';
                         icon.style.position = 'fixed';
 
 
@@ -959,12 +1001,11 @@
                         }, 0)
 
                     }
-                    else
-                    {
-                            // icon.style.opacity = 1;
+                    else {
+                        // icon.style.opacity = 1;
                         icon.style.position = 'absolute';
-                        icon.style.top =  0;
-                        icon.style.right =  0;
+                        icon.style.top = 0;
+                        icon.style.right = 0;
                         icon.style.left = null
                         buttons.style.transform = 'translateX(-100%)';
 
@@ -979,7 +1020,7 @@
 
                         setTimeout(() => {
                             buttons.style.display = 'none';
-                        },550)
+                        }, 550)
 
 
                     }
@@ -1051,15 +1092,14 @@
             setLoading_secondary(false);
 
             // highlight selected house
-            if( prev_sel_id )   // remove yellow circle for previous selected
+            if (prev_sel_id)   // remove yellow circle for previous selected
             {
                 map.setFeatureState({
                     source: 'homeowners',
                     id: prev_sel_id
                 }, { hover: false });
             }
-            if( selected )
-            {
+            if (selected) {
                 let sel_id = selected.id;
                 map.setFeatureState({
                     source: 'homeowners',
@@ -1120,10 +1160,9 @@
             console.log('geocode', geocode);
 
             // get zip code
-            for(var i = 0; i < geocode.features.length; i++)
-            {
+            for (var i = 0; i < geocode.features.length; i++) {
                 let feature = geocode.features[i];
-                if( feature.id.includes('postcode'))
+                if (feature.id.includes('postcode'))
                     zip = feature.text;
             }
 
@@ -1141,30 +1180,30 @@
                     'Access-Control-Allow-Origin': '*',
                 },
                 mode: 'cors',
-                body: JSON.stringify({ center: center, bounds: bounds, radius: r, zip}),
+                body: JSON.stringify({ center: center, bounds: bounds, radius: r, zip }),
             })
-            .then((res) => res.json())
-            .then((json) => {
-                // console.log(json);
+                .then((res) => res.json())
+                .then((json) => {
+                    // console.log(json);
 
-                // let json = await res.json();
-                console.log("data", json);
+                    // let json = await res.json();
+                    console.log("data", json);
 
-                if (flag)
-                    setLoading(false);
-                setLoading_secondary(false)
+                    if (flag)
+                        setLoading(false);
+                    setLoading_secondary(false)
 
-                geojson2 = json;
-                houses = json;
+                    geojson2 = json;
+                    houses = json;
 
-                houses.features.forEach((house, i) => {
-                    house.properties.id = i;
+                    houses.features.forEach((house, i) => {
+                        house.properties.id = i;
+                    });
+
+                    buildLocationList(houses);
+                    let homeowners = map.getSource('homeowners');
+                    homeowners.setData(houses);
                 });
-
-                buildLocationList(houses);
-                let homeowners = map.getSource('homeowners');
-                homeowners.setData(houses);
-            });
             return;
 
         }
@@ -1194,7 +1233,7 @@
             if (status) {
                 sidebar_width = document.getElementById('sidebar').offsetWidth;
                 console.log(sidebar_width)
-                document.getElementById('loading_spinner').style.marginLeft=(sidebar_width / 2) + 'px';
+                document.getElementById('loading_spinner').style.marginLeft = (sidebar_width / 2) + 'px';
                 setVisible(".loading_spinner", true);
             } else {
                 setVisible(".loading_spinner", false);
@@ -1233,31 +1272,31 @@
 
         });
 
-/*
-        function expand() {
-            slider.className = 'expanded';
-            setTimeout(function() {
-                input.focus();
-            }, 500);
-        }
-
-        function collapse() {
-            slider.className = 'collapsed';
-            input.blur();
-        }
-
-        toggle.onclick = expand;
-
-        input.onblur = function() {
-            setTimeout(collapse, 100);
-        }
-
-        buttonWithText.onsubmit = function(e) {
-            e.preventDefault();
-            alert("New username: " + input.value);
-            collapse();
-        }
-*/
+        /*
+                function expand() {
+                    slider.className = 'expanded';
+                    setTimeout(function() {
+                        input.focus();
+                    }, 500);
+                }
+        
+                function collapse() {
+                    slider.className = 'collapsed';
+                    input.blur();
+                }
+        
+                toggle.onclick = expand;
+        
+                input.onblur = function() {
+                    setTimeout(collapse, 100);
+                }
+        
+                buttonWithText.onsubmit = function(e) {
+                    e.preventDefault();
+                    alert("New username: " + input.value);
+                    collapse();
+                }
+        */
         // main problem is to get county/city/zip from lat/lng
 
     </script>

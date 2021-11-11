@@ -17,7 +17,7 @@ width: 5px;
 }
 
 
-/*                                               CLEAR LOADING SPINNER - (NOT) FOR INITAL LOAD SCREEN : 
+/*                                               CLEAR LOADING SPINNER - (NOT) FOR INITAL LOAD SCREEN :
                                         loading spinner for when zooming and house data is loading to the map  */
 
 @keyframes lds-spinner {
@@ -321,17 +321,6 @@ flex-shrink: 1;
 
 /*                                                    POPUP WINDOW - MINI MENU - CLICKED HOUSE               */
 
-        .mapboxgl-popup {
-            flex-grow: 20px;
-            margin: 0px;
-            padding: 0px;
-            border-radius: 15px;
-            border-color: transparent;
-            box-sizing: inherit;
-            box-shadow: none;
-            box-shadow: none;
-            flex-shrink: 20px;
-            }
 
         .container div {
             display: inline;
@@ -367,27 +356,6 @@ flex-shrink: 1;
 
         }
 
-        .mapboxgl-popup-content {
-            overflow-y: hidden;
-            overflow-x: hidden;
-            padding:10px;
-            width: auto;
-            background-color: none;
-            justify-content: space-between;
-            max-width: inherit;
-            max-height: inherit;
-            background: none;
-            border-color: none;
-            border-radius: 15px;
-            flex-shrink: 30px;
-            flex-direction: row;
-            box-shadow: transparent;
-            box-shadow: none;
-            border-color: transparent;
-            flex-grow: 1;
-            box-shadow: none;
-            color: none;
-            }
 
         h1 {
             font-size: 22px;
@@ -562,7 +530,7 @@ flex-shrink: 1;
             margin-top: 10px;
             margin-right: 15px;
             }
-      
+
           .note-submit{
             border: transparent;
             background-color: transparent;
@@ -601,7 +569,7 @@ flex-shrink: 1;
             @keyframes slide {
             100% { left: 0; }
             }
-                  
+
             form {
             background-color: #4654e1;
             width: 200px;
