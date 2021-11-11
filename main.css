@@ -136,7 +136,7 @@ overflow: hidden;
 z-index:  102;
 background: #C7C7C7;
 border-right: none;
-shadow: 2px;
+box-shadow: 2px;
 border: 1px;
 }
 
@@ -166,7 +166,7 @@ background-color: #3D3D3D;
 opacity: 75%;
 color: #fff;
 height: 75px;
-shadow: 2px;
+box-shadow: 2px;
 }
 
 ::placeholder {
@@ -216,7 +216,7 @@ margin-top: 7px;
 background-color: #242424;
 opacity: 90%;
 height: 44px;
-shadow: inset;
+box-shadow: inset;
 }
 
 /*                                                          SEARCH BAR TEXT COLOR & SVG ICON  */
@@ -253,7 +253,7 @@ flex-shrink: 1;
 
 
  /*                                                        MENU LIST ITEMS - CONTAINER   */
- 
+
 .listings {
         height: 100%;
         overflow: auto;
@@ -329,7 +329,7 @@ flex-shrink: 1;
             border-color: transparent;
             box-sizing: inherit;
             box-shadow: none;
-            shadow: none;
+            box-shadow: none;
             flex-shrink: 20px;
             }
 
@@ -345,7 +345,7 @@ flex-shrink: 1;
             max-height: inherit;
             border-radius: 15px;
             box-shadow: transparent;
-            shadow: none;
+            box-shadow: none;
             border-color: transparent;
         }
 
@@ -382,7 +382,7 @@ flex-shrink: 1;
             flex-shrink: 30px;
             flex-direction: row;
             box-shadow: transparent;
-            shadow: none;
+            box-shadow: none;
             border-color: transparent;
             flex-grow: 1;
             box-shadow: none;
@@ -417,7 +417,7 @@ flex-shrink: 1;
             border-top-right-radius: 15px;
             border-width: 0px;
             box-shadow: transparent;
-            shadow: none;
+            box-shadow: none;
             border-color: transparent;
             }
 
@@ -441,7 +441,7 @@ flex-shrink: 1;
             font: 'Noto Sans';
             font-family: sans-serif;
             box-shadow: transparent;
-            shadow: none;
+            box-shadow: none;
             border-color: transparent;
             }
 
@@ -464,7 +464,7 @@ flex-shrink: 1;
             font: 'Noto Sans';
             font-family: sans-serif;
             box-shadow: transparent;
-            shadow: none;
+            box-shadow: none;
             border-color: transparent;
             }
 
@@ -486,7 +486,7 @@ flex-shrink: 1;
             border-width: 0;
             border-color: none;
             box-shadow: transparent;
-            shadow: none;
+            box-shadow: none;
             border-color: transparent;
             }
 
@@ -505,14 +505,14 @@ flex-shrink: 1;
       .mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
             margin-top: 15px;
             box-shadow: transparent;
-            shadow: none;
+            box-shadow: none;
             border-color: transparent;
             }
 
       .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
             border-bottom-color: #91c949;
             box-shadow: transparent;
-            shadow: none;
+            box-shadow: none;
             border-color: transparent;
             }
 
