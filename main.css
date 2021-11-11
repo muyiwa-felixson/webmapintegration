@@ -128,11 +128,10 @@ z-index: 101;
           top: 0;
           left: 0;
           overflow: hidden;
-          se
-          z-index: 102;
+          z-index:  102;
           background: #C7C7C7;
           border-right: none;
-          shadow: 2px:
+          shadow: 2px;
           border: 1px;
         }
 
@@ -279,8 +278,9 @@ z-index: 101;
         font-weight: 400;
       }
 
-      .listings .item.active .title,{
-          font-family: 'Noto Sans';}
+      .listings .item.active .title {
+        font-family: 'Noto Sans';
+      }
 
       .listings .item .title:hover {
         font-family: 'Noto Sans';
